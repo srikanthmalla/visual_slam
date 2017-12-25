@@ -1,0 +1,1 @@
+curl  --progress-bar http://robotics.ethz.ch/~asl-datasets/ijrr_euroc_mav_dataset/vicon_room1/V1_01_easy/V1_01_easy.bag -o V1_easy.bag
