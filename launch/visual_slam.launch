@@ -1,0 +1,9 @@
+<launch>
+<!-- rosbag -->
+<node pkg="rosbag" type="play" name="player"  args="$(find visual_slam)/V1_easy.bag"/>
+	
+<!-- Synchronizer Node -->
+<!-- <node name="synchronizer_node" pkg="sync_data"
+  type="synchronizer_node" required="true" output="screen"></node> -->
+
+</launch>
