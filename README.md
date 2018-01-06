@@ -2,7 +2,7 @@
 
 1. Clone the repo to your workspace `https://github.com/srikanthmalla/visual_slam.git`
 
-2. Download ETH Zurich Indoor Dataset `sh download_dataset.sh` 
+2. Download Kitti Visual Odometry Dataset `sh download_dataset.sh` 
 
 3. Compile the code using `catkin_make`
 
