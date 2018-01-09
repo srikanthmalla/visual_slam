@@ -6,7 +6,7 @@
 #include <sensor_msgs/Image.h>
 #include <sensor_msgs/image_encodings.h>
 #include <opencv2/highgui/highgui.hpp>
-
+#include <iostream>
 class ImageNode{
 public:
 	ImageNode();
@@ -16,6 +16,13 @@ private:
 	ros::NodeHandle nh_;
 	ros::Subscriber img_sub_;
 	std::string OPENCV_WINDOW_="Left Camera";
+	std::vector<cv::Point2f> points1;
+	std::vector<cv::Point2f> points2;
+	cv::Mat I1;
+	cv::Mat I2;
+	int counter=0; //for checking first few frames
+	int threshold=1000; //number of feature points
+	cv::Mat output; //Output to display (by adding features)
 };
 
 

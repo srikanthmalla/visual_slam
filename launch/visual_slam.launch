@@ -1,6 +1,6 @@
 <launch>
 <!-- rosbag -->
-<node pkg="rosbag" type="play" name="player"  args="$(find visual_slam)/datasets/2011_09_26_0001.bag"/>
+<node pkg="rosbag" type="play" name="player"  args="-r 0.2 $(find visual_slam)/datasets/2011_09_26_0001.bag"/>
 	
 <!-- Visual Slam Node -->
 <node name="visual_slam_node" pkg="visual_slam" type="visual_slam_node" required="true" output="screen"></node>
