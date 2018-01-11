@@ -4,6 +4,7 @@
 ImageNode::ImageNode(){
 	cv::namedWindow(OPENCV_WINDOW_);
 	initPathMarker(odom);
+	curr_pose.setIdentity();
 	img_sub_ = nh_.subscribe<sensor_msgs::Image>("/cam00/left/image_raw", 10, &ImageNode::imageCallback, this);
 	odom_pub_ =  nh_.advertise<visualization_msgs::Marker> ("odom", 10);
 	ros::spin();
@@ -36,6 +37,7 @@ void ImageNode::imageCallback(const sensor_msgs::ImageConstPtr& msg)
     	featureTracking(I1,I2,points1,points2,output);
     	std::cout<<"\rKLT FLow:: no of corners::"<<points2.size()<<std::flush;
     	get_RT(points1,points2,R,t,focal_length,pp);//from find_motion header
+    	addWayPoint(odom, R, t, curr_pose);
     	odom_pub_.publish(odom);  
     }
     timer=clock()-timer;

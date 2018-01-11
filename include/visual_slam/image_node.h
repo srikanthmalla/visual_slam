@@ -10,6 +10,7 @@
 #include <time.h>       /* clock_t, clock, CLOCKS_PER_SEC */
 #include <string>     // std::string, std::to_string
 #include <visualization_msgs/Marker.h>
+#include <tf/tf.h>
 
 class ImageNode{
 public:
@@ -34,7 +35,7 @@ private:
 	double focal_length=984.2439;//diagonal element of K matrix
 	cv::Point2d pp=cv::Point2d(690.0,233.1966);//third column of K matrix
 	visualization_msgs::Marker odom;
-	geometry_msgs::Pose curr_pose;
+	tf::Transform curr_pose;
 };
 
 

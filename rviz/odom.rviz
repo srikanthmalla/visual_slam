@@ -65,8 +65,51 @@ Visualization Manager:
       Marker Topic: /odom
       Name: Marker
       Namespaces:
-        {}
+        path: true
       Queue Size: 100
+      Value: true
+    - Class: rviz/TF
+      Enabled: true
+      Frame Timeout: 15
+      Frames:
+        All Enabled: true
+        cam00:
+          Value: true
+        cam01:
+          Value: true
+        cam02:
+          Value: true
+        cam03:
+          Value: true
+        imu:
+          Value: true
+        robot:
+          Value: true
+        velodyne:
+          Value: true
+        world:
+          Value: true
+      Marker Scale: 1
+      Name: TF
+      Show Arrows: true
+      Show Axes: true
+      Show Names: true
+      Tree:
+        world:
+          imu:
+            cam00:
+              {}
+            cam01:
+              {}
+            cam02:
+              {}
+            cam03:
+              {}
+            velodyne:
+              {}
+          robot:
+            {}
+      Update Interval: 0
       Value: true
   Enabled: true
   Global Options:
@@ -92,7 +135,7 @@ Visualization Manager:
   Views:
     Current:
       Class: rviz/Orbit
-      Distance: 3.92218924
+      Distance: 77.0575027
       Enable Stereo Rendering:
         Stereo Eye Separation: 0.0599999987
         Stereo Focal Distance: 1
