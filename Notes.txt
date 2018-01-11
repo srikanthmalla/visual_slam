@@ -1,0 +1,1 @@
+With 9.690 hz of camera input rate, after processing with cpu_flow (KLT)~ Frequency is 3hz

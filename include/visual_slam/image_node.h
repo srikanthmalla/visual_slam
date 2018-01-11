@@ -7,6 +7,10 @@
 #include <sensor_msgs/image_encodings.h>
 #include <opencv2/highgui/highgui.hpp>
 #include <iostream>
+#include <time.h>       /* clock_t, clock, CLOCKS_PER_SEC */
+#include <string>     // std::string, std::to_string
+#include <visualization_msgs/Marker.h>
+
 class ImageNode{
 public:
 	ImageNode();
@@ -14,15 +18,23 @@ public:
 	~ImageNode();
 private:
 	ros::NodeHandle nh_;
-	ros::Subscriber img_sub_;
+	ros::Subscriber img_sub_;//subscribing images
+	ros::Publisher  odom_pub_;//publish path
 	std::string OPENCV_WINDOW_="Left Camera";
 	std::vector<cv::Point2f> points1;
 	std::vector<cv::Point2f> points2;
-	cv::Mat I1;
-	cv::Mat I2;
+	cv::Mat I1;//Image at time t1
+	cv::Mat I2;//Image at time t2
+	float frame_rate=0;//to check the processing speed
 	int counter=0; //for checking first few frames
 	int threshold=1000; //number of feature points
 	cv::Mat output; //Output to display (by adding features)
+	cv::Mat R;// rotation matrix
+	cv::Mat t;// translation matrix
+	double focal_length=984.2439;//diagonal element of K matrix
+	cv::Point2d pp=cv::Point2d(690.0,233.1966);//third column of K matrix
+	visualization_msgs::Marker odom;
+	geometry_msgs::Pose curr_pose;
 };
 
 

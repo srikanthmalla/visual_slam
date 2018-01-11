@@ -5,6 +5,8 @@ find_package(catkin REQUIRED COMPONENTS
   roscpp
   std_msgs
   sensor_msgs
+  visualization_msgs
+  geometry_msgs
   image_transport
   cv_bridge
 )
@@ -27,5 +29,7 @@ include_directories(
 )
 
 add_executable(visual_slam_node src/visual_slam_node.cpp src/image_node.cpp)
-
 target_link_libraries(visual_slam_node ${catkin_LIBRARIES} ${OpenCV_LIBRARIES})
+
+# add_executable(tested src/test.cpp)
+# target_link_libraries(tested ${OpenCV_LIBRARIES})

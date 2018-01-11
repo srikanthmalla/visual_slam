@@ -1,13 +1,18 @@
 #include "visual_slam/image_node.h"
 #include "visual_slam/feature_detector.h"
+#include "visual_slam/find_motion.h"
 ImageNode::ImageNode(){
 	cv::namedWindow(OPENCV_WINDOW_);
-	img_sub_ = nh_.subscribe<sensor_msgs::Image>("/cam00/left/image_raw", 1, &ImageNode::imageCallback, this);
+	initPathMarker(odom);
+	img_sub_ = nh_.subscribe<sensor_msgs::Image>("/cam00/left/image_raw", 10, &ImageNode::imageCallback, this);
+	odom_pub_ =  nh_.advertise<visualization_msgs::Marker> ("odom", 10);
 	ros::spin();
 }
 
 void ImageNode::imageCallback(const sensor_msgs::ImageConstPtr& msg)
 {
+	clock_t timer;
+	timer=clock();
 	cv_bridge::CvImagePtr cv_ptr;
 	try{
 		cv_ptr = cv_bridge::toCvCopy(msg, sensor_msgs::image_encodings::MONO8);
@@ -29,8 +34,15 @@ void ImageNode::imageCallback(const sensor_msgs::ImageConstPtr& msg)
 	    	std::cout<<"\nRunning FAST corner detector at frame "<<counter <<" no of corners ::"<<points1.size()<<"\n";
     	}
     	featureTracking(I1,I2,points1,points2,output);
-    	std::cout<<"\rKLT FLow:: no of corners::"<<points2.size()<<std::flush;    	
+    	std::cout<<"\rKLT FLow:: no of corners::"<<points2.size()<<std::flush;
+    	get_RT(points1,points2,R,t,focal_length,pp);//from find_motion header
+    	odom_pub_.publish(odom);  
     }
+    timer=clock()-timer;
+    float time_taken=((float)timer)/CLOCKS_PER_SEC;
+    frame_rate=1/(time_taken);
+    //add frame rate to the output
+	cv::putText(output, "Frame Rate: "+std::to_string(frame_rate), cv::Point(50, 100), cv::FONT_HERSHEY_SIMPLEX, 1, cv::Scalar(255, 255, 255), 4);
     cv::imshow(OPENCV_WINDOW_, output);// Update GUI Window
     cv::waitKey(1);
 	//copy back
