@@ -2,9 +2,11 @@
 
 1. Clone the repo to your workspace `https://github.com/srikanthmalla/visual_slam.git`
 
-2. Download Kitti Visual Odometry Dataset `sh download_dataset.sh` 
+2. cd `visual_slam` (go in to the package)
 
-3. Compile the code using `catkin_make`
+3. Download Kitti Visual Odometry Dataset `sh download_dataset.sh` (automatically into datasets folder)
 
-4. Run `roslaunch visual_slam visual_slam.launch`
+4. Compile the code using `catkin_make`
+
+5. Run `roslaunch visual_slam visual_slam.launch`
 
