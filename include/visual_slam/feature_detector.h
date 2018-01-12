@@ -2,11 +2,14 @@
 #define _FEATURE_DETECTOR_H_
 
 #include <opencv2/core/core.hpp>
+// using namespace std;//because of opencv2/gpu
+// #include <opencv2/gpu/gpu.hpp>
 #include <opencv2/features2d/features2d.hpp>
 void corner_detector(cv::Mat& img_1, std::vector<cv::Point2f>& points1,cv::Mat& output){ 
   std::vector<cv::KeyPoint> keypoints_1;
   int fast_threshold = 20;//this is important 
   bool nonmaxSuppression = true;
+  // cv::gpu::GpuMat d_src;
   cv::FAST(img_1, keypoints_1, fast_threshold, nonmaxSuppression); 
   cv::drawKeypoints(img_1,keypoints_1,output);
   cv::KeyPoint::convert(keypoints_1, points1, std::vector<int>());

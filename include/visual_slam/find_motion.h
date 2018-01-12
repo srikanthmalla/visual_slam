@@ -21,16 +21,8 @@ void initPathMarker(visualization_msgs::Marker &m)
     m.id = 1;
     m.type = visualization_msgs::Marker::LINE_STRIP;
     m.action = visualization_msgs::Marker::ADD;
-    // m.pose.position.x = 0.0;
-    // m.pose.position.y = 0.0;
-    // m.pose.position.z = 0.0;
-    // m.pose.orientation.x = 0.0;
-    // m.pose.orientation.y = 0.0;
-    // m.pose.orientation.z = 0.0;
     m.pose.orientation.w = 1.0;
     m.scale.x = 0.25;
-    // m.scale.y = 0.25;
-    // m.scale.z = 0.25;
     // m.color.r = 0.0;
     // m.color.g = 0.0;
     m.color.b = 1.0;
@@ -57,20 +49,36 @@ void cvmat2Transform(cv::Mat& R,cv::Mat& t,tf::Transform& T){
 	T.setOrigin(translation);
 }
 #include <tf/transform_broadcaster.h>
+#include <tf/transform_listener.h>// for visualizing groundtruth path
 #include <geometry_msgs/Point.h>
 
-void addWayPoint(visualization_msgs::Marker &m, cv::Mat& R,cv::Mat& t,tf::Transform& curr_pose)
+void addWayPoint(visualization_msgs::Marker &m,cv::Mat& R,cv::Mat& t,tf::Transform& curr_pose)
 {	
 	static tf::TransformBroadcaster br;
 	tf::Transform T;
+	// tf::TransformListener listener;// ground truth listener
+	// tf::StampedTransform gt;
+	tf::Matrix3x3 R1(0,0,-1,1,0,0,0,-1,0);
+	tf::Vector3 t1(0,0,0);
+	tf::Transform V(R1,t1);// V for Visualization
 	cvmat2Transform(R,t,T);
 	curr_pose=curr_pose*T;
-	std::cout<<"\n"<<curr_pose.getOrigin().x()<<" "<<curr_pose.getOrigin().y()<<" "<<curr_pose.getOrigin().z()<<"\n"<<std::flush;
-	br.sendTransform(tf::StampedTransform(curr_pose, ros::Time::now(), "world", "tested"));
+	V=V*curr_pose;
+	std::cout<<"\n"<<V.getOrigin().x()<<" "<<V.getOrigin().y()<<" "<<V.getOrigin().z()<<"\n"<<std::flush;
+	br.sendTransform(tf::StampedTransform(V, ros::Time::now(), "world", "tested"));
 	//getting the position to draw path
-	tf::Vector3 l(curr_pose.getOrigin());
+	tf::Vector3 l(V.getOrigin());
 	geometry_msgs::Point p;
 	p.x=l.x();p.y=l.y();p.z=l.z();
 	m.points.push_back(p);
+  //   try{
+		// listener.lookupTransform("/tested", "/velodyne",  
+  //                              ros::Time(0), gt);
+  //   	p.x=gt.getOrigin().x();p.y=gt.getOrigin().y();p.z=gt.getOrigin().z();
+		// gt_m.points.push_back(p);
+  //   }
+  //   catch (tf::TransformException ex){
+  //     ROS_ERROR("%s",ex.what());
+  //   }
 }
 #endif

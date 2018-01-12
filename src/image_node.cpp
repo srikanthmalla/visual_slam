@@ -3,10 +3,12 @@
 #include "visual_slam/find_motion.h"
 ImageNode::ImageNode(){
 	cv::namedWindow(OPENCV_WINDOW_);
-	initPathMarker(odom);
+	initPathMarker(odom);//predicted
+    // initPathMarker(gt_odom);//groundtruth
 	curr_pose.setIdentity();
 	img_sub_ = nh_.subscribe<sensor_msgs::Image>("/cam00/left/image_raw", 10, &ImageNode::imageCallback, this);
 	odom_pub_ =  nh_.advertise<visualization_msgs::Marker> ("odom", 10);
+    // gt_odom_pub_= nh_.advertise<visualization_msgs::Marker> ("gt_odom", 10);
 	ros::spin();
 }
 
@@ -38,7 +40,8 @@ void ImageNode::imageCallback(const sensor_msgs::ImageConstPtr& msg)
     	std::cout<<"\rKLT FLow:: no of corners::"<<points2.size()<<std::flush;
     	get_RT(points1,points2,R,t,focal_length,pp);//from find_motion header
     	addWayPoint(odom, R, t, curr_pose);
-    	odom_pub_.publish(odom);  
+    	odom_pub_.publish(odom); 
+        // gt_odom_pub_.publish(gt_odom);  
     }
     timer=clock()-timer;
     float time_taken=((float)timer)/CLOCKS_PER_SEC;

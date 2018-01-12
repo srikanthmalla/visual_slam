@@ -20,7 +20,7 @@ public:
 private:
 	ros::NodeHandle nh_;
 	ros::Subscriber img_sub_;//subscribing images
-	ros::Publisher  odom_pub_;//publish path
+	ros::Publisher odom_pub_;//publish path
 	std::string OPENCV_WINDOW_="Left Camera";
 	std::vector<cv::Point2f> points1;
 	std::vector<cv::Point2f> points2;
@@ -34,7 +34,7 @@ private:
 	cv::Mat t;// translation matrix
 	double focal_length=984.2439;//diagonal element of K matrix
 	cv::Point2d pp=cv::Point2d(690.0,233.1966);//third column of K matrix
-	visualization_msgs::Marker odom;
+	visualization_msgs::Marker odom, gt_odom;// predicted and ground truth odometry
 	tf::Transform curr_pose;
 };
 
