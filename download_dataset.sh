@@ -17,6 +17,10 @@
 # kitti2bag -t 2011_09_26 -r 0002 raw_synced .
 
 # already created rosbags
-mkdir datasets && cd datasets
+mkdir datasets
+
+cd datasets
+
 wget https://www.dropbox.com/s/jgxqtwfsqtoavz6/2011_09_26_0001.bag
+
 cd ..
