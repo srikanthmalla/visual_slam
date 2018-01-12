@@ -58,7 +58,7 @@ void addWayPoint(visualization_msgs::Marker &m,cv::Mat& R,cv::Mat& t,tf::Transfo
 	tf::Transform T;
 	// tf::TransformListener listener;// ground truth listener
 	// tf::StampedTransform gt;
-	tf::Matrix3x3 R1(0,0,-1,1,0,0,0,-1,0);
+	tf::Matrix3x3 R1(0,0,-1,-1,0,0,0,1,0);
 	tf::Vector3 t1(0,0,0);
 	tf::Transform V(R1,t1);// V for Visualization
 	cvmat2Transform(R,t,T);
