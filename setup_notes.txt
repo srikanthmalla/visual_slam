@@ -1,12 +1,3 @@
-With 9.690 hz of camera input rate, after processing with cpu_flow (KLT)~ Frequency is 3hz
-
-
-# Matching Opencv frames and camera frame
-In opencv z is considered forward, but x is considered backward in camera (kitti) and z down
-
-For visualization adjust these
-
-
 # installing opencv for gpu
 
 1. [compiler] sudo apt-get install build-essential
