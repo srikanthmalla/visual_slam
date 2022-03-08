@@ -1,3 +1,6 @@
+// Author: Srikanth Malla
+// Purpose: test script for gpu based opencv method, binary thresholding
+
 #include <iostream>
 #include "opencv2/opencv.hpp"
 #include "opencv2/gpu/gpu.hpp"

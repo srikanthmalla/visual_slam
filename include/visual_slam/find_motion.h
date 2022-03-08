@@ -1,20 +1,33 @@
+// Author: Srikanth Malla
+// Purpose: Motion related transformation computation and ros visualization functions
+
 #ifndef _FIND_MOTION_H_
 #define _FIND_MOTION_H_
 
+#include "tf/tf.h"//this is from ros
+#include <geometry_msgs/Point.h>
 #include "opencv2/core/core.hpp"
 #include "opencv2/calib3d/calib3d.hpp"
+#include <tf/transform_broadcaster.h>
+#include <tf/transform_listener.h>// for visualizing groundtruth path
+#include <visualization_msgs/Marker.h>
+#include <visualization_msgs/MarkerArray.h>
 //pp is principal point (3rd column of K matrix, which is intrinsics)
 //f is focal length (diagonal element of K matrix, which is intrinsics)
+
 void get_RT(std::vector<cv::Point2f>& points1, std::vector<cv::Point2f>& points2, cv::Mat& R,cv::Mat& t, double& focal,cv::Point2d& pp){
+  // Purpose: compute essential matrix and Rotation, translation
+  // input: 2d points reference (points1, points2), Rotation 3x3 (R), translation (3x1), focal length (focal), 2d points (pp)
+
 	cv::Mat E=cv::findEssentialMat(points1, points2, focal, pp, cv::RANSAC, 0.999, 1.0);
 	cv::recoverPose(E, points1, points2, R, t, focal, pp);
 }
 
-#include <visualization_msgs/Marker.h>
-#include <visualization_msgs/MarkerArray.h>
 //LINE STRIP marker is used. NOTE: scale of translation is normalized to 1 in monocular scenario
-void initPathMarker(visualization_msgs::Marker &m)
-{
+void initPathMarker(visualization_msgs::Marker &m){
+    // Purpose: create a path marker
+    // input: visualization ros marker m
+
     m.header.frame_id = "/world"; 
     m.header.stamp = ros::Time();
     m.ns = "path";
@@ -29,8 +42,10 @@ void initPathMarker(visualization_msgs::Marker &m)
     m.color.a=1.0;  
 }
 
-#include "tf/tf.h"//this is from ros
-void cvmat2Transform(cv::Mat& R,cv::Mat& t,tf::Transform& T){
+void cvmat2Transform(cv::Mat& R, cv::Mat& t, tf::Transform& T){
+  // Purpose: convert CVmat to transform
+  // input: Rotation 3x3 (R), translation (3x1), output ros transform (T)
+
 	double r11=R.at<double>(0,0);
 	double r12=R.at<double>(0,1);
 	double r13=R.at<double>(0,2);	
@@ -48,12 +63,11 @@ void cvmat2Transform(cv::Mat& R,cv::Mat& t,tf::Transform& T){
 	T.setBasis(rotation);
 	T.setOrigin(translation);
 }
-#include <tf/transform_broadcaster.h>
-#include <tf/transform_listener.h>// for visualizing groundtruth path
-#include <geometry_msgs/Point.h>
 
-void addWayPoint(visualization_msgs::Marker &m,cv::Mat& R,cv::Mat& t,tf::Transform& curr_pose)
-{	
+void addWayPoint(visualization_msgs::Marker &m, cv::Mat& R, cv::Mat& t, tf::Transform& curr_pose){
+  // Purpose: add visualization waypoint
+  // input: visualization marker to update (m),  Rotation 3x3 (R), translation (3x1), curr pose transform (T)
+
 	static tf::TransformBroadcaster br;
 	tf::Transform T;
 	// tf::TransformListener listener;// ground truth listener
@@ -81,4 +95,5 @@ void addWayPoint(visualization_msgs::Marker &m,cv::Mat& R,cv::Mat& t,tf::Transfo
   //     ROS_ERROR("%s",ex.what());
   //   }
 }
+
 #endif
